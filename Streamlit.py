@@ -1,8 +1,12 @@
 import streamlit as st
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import random
+from decimal import Decimal, getcontext
+
+# Définir la précision
+getcontext().prec = 28
 
 # Importer les données
 @st.cache_data
@@ -29,9 +33,9 @@ def evaluate(portfolio, lambda_):
 def genetic_algorithm(lambda_, mutation_prob, mean_returns, cov_matrix, num_assets, pop_size):
     population = []
     for _ in range(pop_size):
-        portfolio = [random.random() for _ in range(num_assets)]
+        portfolio = [float(Decimal(random.random())) for _ in range(num_assets)]
         portfolio_sum = sum(portfolio)
-        portfolio = [weight/portfolio_sum for weight in portfolio]  # normaliser les poids pour qu'ils somment à 1
+        portfolio = [round(weight/portfolio_sum,8) for weight in portfolio]  # normaliser les poids pour qu'ils somment à 1
         population.append(portfolio)
 
     # Initialiser le meilleur score
@@ -59,7 +63,7 @@ def genetic_algorithm(lambda_, mutation_prob, mean_returns, cov_matrix, num_asse
                 child = parent1[:crossover_points[0]] + parent2[crossover_points[0]:crossover_points[1]] + parent1[crossover_points[1]:crossover_points[2]] + parent2[crossover_points[2]:]
                 # Normaliser les poids du portefeuille de l'enfant pour qu'ils somment à 1
                 child_sum = sum(child)
-                child = [weight/child_sum for weight in child]
+                child = [round(weight0/child_sum,8) for weight0 in child]
                 population.append(child)
             else:  # mutation
                 if random.random() < mutation_prob:  # probabilité de mutation
@@ -70,14 +74,16 @@ def genetic_algorithm(lambda_, mutation_prob, mean_returns, cov_matrix, num_asse
                     parent[mutation_point] = random.random()
                     # Normaliser les poids du portefeuille du parent pour qu'ils somment à 1
                     parent_sum = sum(parent)
-                    parent = [weight/parent_sum for weight in parent]
+                    parent = [round(weight1/parent_sum,8) for weight1 in parent]
                     population.append(parent)
+            
+        # print(population)
 
     # Retourner le meilleur portefeuille trouvé
     best_portfolio = min(population, key=lambda x: evaluate(x, lambda_))
     return best_portfolio, best_score
-
-# Interface utilisateur
+genetic_algorithm(0.5,0.7,mean_returns,cov_matrix,len(mean_returns),100)
+#Interface utilisateur
 def main():
     st.title("Optimisation de portefeuille avec un algorithme génétique")
 
@@ -90,17 +96,16 @@ def main():
 
     # Initialiser la population
     num_assets = len(mean_returns)
-    pop_size = 100  # taille de la population
+    pop_size = 10000  # taille de la population
 
     # Paramètres de l'utilisateur
-    lambda_ = st.sidebar.slider("Lambda", min_value=0.1, max_value=1.0, value=0.5, step=0.1)
-    mutation_prob = st.sidebar.slider("Probabilité de mutation", min_value=0.1, max_value=1.0, value=0.6, step=0.1)
+
     capital = st.sidebar.number_input("Capital", min_value=0.0, value=10000.0, step=100.0)  # Ajout de l'entrée du capital
 
 
     # Exécuter l'algorithme génétique
     if st.button("Exécuter l'algorithme génétique"):
-        best_portfolio, best_score = genetic_algorithm(lambda_, mutation_prob, mean_returns, cov_matrix, num_assets, pop_size)
+        best_portfolio, best_score = genetic_algorithm(0.5, 0.006, mean_returns, cov_matrix, num_assets, pop_size)
         st.write(f"Meilleur portefeuille: {best_portfolio}")
         st.write(f"Meilleur score: {best_score}")
         st.write(f"Répartition du capital: {np.array(best_portfolio) * capital}")  # Affichage de la répartition du capital
@@ -116,7 +121,7 @@ def main():
         lambda_values = np.linspace(0, 1, 100)  # par exemple, de 0 à 1 avec un pas de 0.01
         portfolios = []
         for lambda_ in lambda_values:
-            portfolio, _ = genetic_algorithm(lambda_, mutation_prob, mean_returns, cov_matrix, num_assets, pop_size)
+            portfolio, _ = genetic_algorithm(lambda_, 0.006, mean_returns, cov_matrix, num_assets, pop_size)
             portfolios.append(portfolio)
 
         # Calculer le rendement et la volatilité pour chaque portefeuille
