@@ -30,7 +30,7 @@ def evaluate(portfolio, lambda_):
     return portfolio_volatility - lambda_ * portfolio_return  # fonction d'évaluation basée sur le modèle moyenne-variance
 
 # Algorithme génétique
-def genetic_algorithm(lambda_, mutation_prob, mean_returns, cov_matrix, num_assets, pop_size):
+def genetic_algorithm(lambda_, mutation_prob, mean_returns,crossover_prob, cov_matrix, num_assets, pop_size):
     population = []
     for _ in range(pop_size):
         portfolio = [float(Decimal(random.random())) for _ in range(num_assets)]
@@ -105,7 +105,7 @@ def main():
 
     # Exécuter l'algorithme génétique
     if st.button("Exécuter l'algorithme génétique"):
-        best_portfolio, best_score = genetic_algorithm(0.6, 0.01, mean_returns, cov_matrix, num_assets, pop_size)
+        best_portfolio, best_score = genetic_algorithm(0.6, 0.07, mean_returns, cov_matrix, num_assets, pop_size)
         st.write(f"Meilleur portefeuille: {best_portfolio}")
         st.write(f"Meilleur score: {best_score}")
         st.write(f"Répartition du capital: {np.array(best_portfolio) * capital}")  # Affichage de la répartition du capital
