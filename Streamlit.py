@@ -82,7 +82,7 @@ def genetic_algorithm(lambda_, mutation_prob, mean_returns, cov_matrix, num_asse
     # Retourner le meilleur portefeuille trouvé
     best_portfolio = min(population, key=lambda x: evaluate(x, lambda_))
     return best_portfolio, best_score
-genetic_algorithm(0.5,0.7,mean_returns,cov_matrix,len(mean_returns),100)
+genetic_algorithm(0.5,0.05,mean_returns,cov_matrix,len(mean_returns),100)
 #Interface utilisateur
 def main():
     st.title("Optimisation de portefeuille avec un algorithme génétique")
@@ -105,7 +105,7 @@ def main():
 
     # Exécuter l'algorithme génétique
     if st.button("Exécuter l'algorithme génétique"):
-        best_portfolio, best_score = genetic_algorithm(0.6, 0.06, mean_returns, cov_matrix, num_assets, pop_size)
+        best_portfolio, best_score = genetic_algorithm(0.6, 0.05, mean_returns, cov_matrix, num_assets, pop_size)
         st.write(f"Meilleur portefeuille: {best_portfolio}")
         st.write(f"Meilleur score: {best_score}")
         st.write(f"Répartition du capital: {np.array(best_portfolio) * capital}")  # Affichage de la répartition du capital
