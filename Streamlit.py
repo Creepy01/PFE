@@ -118,7 +118,7 @@ def main():
                     # Afficher les résultats dans un tableau
         st.table(results)
                     # Exécuter l'algorithme génétique pour différentes valeurs de lambda
-        lambda_values = np.linspace(0, 1, 100)  # par exemple, de 0 à 1 avec un pas de 0.01
+        lambda_values = np.linspace(0, 0.7, 10)  # par exemple, de 0 à 1 avec un pas de 0.01
         portfolios = []
         for lambda_ in lambda_values:
             portfolio, _ = genetic_algorithm(lambda_, 0.07, mean_returns, cov_matrix, num_assets, pop_size)
