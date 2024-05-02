@@ -82,7 +82,7 @@ def genetic_algorithm(lambda_, mutation_prob, mean_returns, cov_matrix, num_asse
     # Retourner le meilleur portefeuille trouvé
     best_portfolio = min(population, key=lambda x: evaluate(x, lambda_))
     return best_portfolio, best_score
-genetic_algorithm(0.5,0.7,mean_returns,cov_matrix,len(mean_returns),100)
+
 #Interface utilisateur
 def main():
     st.title("Optimisation de portefeuille avec un algorithme génétique")
@@ -96,7 +96,7 @@ def main():
 
     # Initialiser la population
     num_assets = len(mean_returns)
-    pop_size = 10000  # taille de la population
+    pop_size = 1000  # taille de la population
 
     # Paramètres de l'utilisateur
 
