@@ -121,7 +121,7 @@ def main():
         lambda_values = np.linspace(0, 1, 100)  # par exemple, de 0 à 1 avec un pas de 0.01
         portfolios = []
         for lambda_ in lambda_values:
-            portfolio, _ = genetic_algorithm(lambda_, 0.006, mean_returns, cov_matrix, num_assets, pop_size)
+            portfolio, _ = genetic_algorithm(lambda_, 0.07, mean_returns, cov_matrix, num_assets, pop_size)
             portfolios.append(portfolio)
 
         # Calculer le rendement et la volatilité pour chaque portefeuille
