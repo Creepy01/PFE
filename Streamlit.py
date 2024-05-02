@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd
 import random
 from decimal import Decimal, getcontext
-  
-pop_size = 1000  # taille de la population
+
 # Définir la précision
 getcontext().prec = 28
 
@@ -31,7 +30,7 @@ def evaluate(portfolio, lambda_):
     return portfolio_volatility - lambda_ * portfolio_return  # fonction d'évaluation basée sur le modèle moyenne-variance
 
 # Algorithme génétique
-def genetic_algorithm(lambda_, mutation_prob, mean_returns,crossover_prob, cov_matrix, num_assets):
+def genetic_algorithm(lambda_, mutation_prob, mean_returns, cov_matrix, num_assets, pop_size):
     population = []
     for _ in range(pop_size):
         portfolio = [float(Decimal(random.random())) for _ in range(num_assets)]
@@ -83,7 +82,7 @@ def genetic_algorithm(lambda_, mutation_prob, mean_returns,crossover_prob, cov_m
     # Retourner le meilleur portefeuille trouvé
     best_portfolio = min(population, key=lambda x: evaluate(x, lambda_))
     return best_portfolio, best_score
-
+genetic_algorithm(0.5,0.7,mean_returns,cov_matrix,len(mean_returns),100)
 #Interface utilisateur
 def main():
     st.title("Optimisation de portefeuille avec un algorithme génétique")
@@ -97,7 +96,7 @@ def main():
 
     # Initialiser la population
     num_assets = len(mean_returns)
-  
+    pop_size = 10000  # taille de la population
 
     # Paramètres de l'utilisateur
 
@@ -106,7 +105,7 @@ def main():
 
     # Exécuter l'algorithme génétique
     if st.button("Exécuter l'algorithme génétique"):
-        best_portfolio, best_score = genetic_algorithm(0.6, 0.07, mean_returns, cov_matrix, num_assets)
+        best_portfolio, best_score = genetic_algorithm(0.6, 0.06, mean_returns, cov_matrix, num_assets, pop_size)
         st.write(f"Meilleur portefeuille: {best_portfolio}")
         st.write(f"Meilleur score: {best_score}")
         st.write(f"Répartition du capital: {np.array(best_portfolio) * capital}")  # Affichage de la répartition du capital
@@ -119,10 +118,10 @@ def main():
                     # Afficher les résultats dans un tableau
         st.table(results)
                     # Exécuter l'algorithme génétique pour différentes valeurs de lambda
-        lambda_values = np.linspace(0, 0.7, 10)  # par exemple, de 0 à 1 avec un pas de 0.01
+        lambda_values = np.linspace(0, 1, 100)  # par exemple, de 0 à 1 avec un pas de 0.01
         portfolios = []
         for lambda_ in lambda_values:
-            portfolio, _ = genetic_algorithm(lambda_, 0.07, mean_returns, cov_matrix, num_assets)
+            portfolio, _ = genetic_algorithm(0.6, 0.07, mean_returns, cov_matrix, num_assets, pop_size)
             portfolios.append(portfolio)
 
         # Calculer le rendement et la volatilité pour chaque portefeuille
