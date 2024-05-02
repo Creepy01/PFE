@@ -105,7 +105,7 @@ def main():
 
     # Exécuter l'algorithme génétique
     if st.button("Exécuter l'algorithme génétique"):
-        best_portfolio, best_score = genetic_algorithm(0.6, 0.06, mean_returns, cov_matrix, num_assets, pop_size)
+        best_portfolio, best_score = genetic_algorithm(0.6, 0.01, mean_returns, cov_matrix, num_assets, pop_size)
         st.write(f"Meilleur portefeuille: {best_portfolio}")
         st.write(f"Meilleur score: {best_score}")
         st.write(f"Répartition du capital: {np.array(best_portfolio) * capital}")  # Affichage de la répartition du capital
