@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd
 import random
 from decimal import Decimal, getcontext
-
+  
+pop_size = 1000  # taille de la population
 # Définir la précision
 getcontext().prec = 28
 
@@ -96,7 +97,7 @@ def main():
 
     # Initialiser la population
     num_assets = len(mean_returns)
-    pop_size = 1000  # taille de la population
+  
 
     # Paramètres de l'utilisateur
 
