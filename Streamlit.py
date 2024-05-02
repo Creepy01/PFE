@@ -96,7 +96,7 @@ def main():
 
     # Initialiser la population
     num_assets = len(mean_returns)
-    pop_size = 10000  # taille de la population
+    pop_size = 1000  # taille de la population
 
     # Paramètres de l'utilisateur
 
